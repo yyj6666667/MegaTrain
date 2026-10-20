@@ -200,7 +200,8 @@ def training_snapshots(architecture, world_size, interval, dtype, rebuild):
 
 def assert_snapshots_close(actual, expected, dtype):
     tolerances = {"rtol": 1e-5, "atol": 1e-6} if dtype == torch.float32 else {}
-    for step, (left, right) in enumerate(zip(actual, expected, strict=True)):
+    assert len(actual) == len(expected)
+    for step, (left, right) in enumerate(zip(actual, expected)):
         for key in ("logits", "loss", "gradients", "parameters"):
             x, y = left[key], right[key]
             if key in ("gradients", "parameters"):
